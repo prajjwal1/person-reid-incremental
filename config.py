@@ -28,11 +28,9 @@ def loss_function(multilabel):
 
 
 # In[4]:
-
-
-def get_dataset(name, partition,transform):
-    image_folder_datasets = ['imagenet','food-101']
-    image_dir = os.path.join('input', '%s-%s' % (name,partition))
+def get_dataset(name, partition, transform):
+    image_folder_datasets = ['imagenet', 'food-101']
+    image_dir = os.path.join('input', '%s-%s' % (name, partition))
     if name in image_folder_datasets:
         dataset = datasets.ImageFolder(image_dir, transform)
     elif name == 'cifar10':
@@ -40,11 +38,10 @@ def get_dataset(name, partition,transform):
             train = True
         elif partition == 'test':
             train = False
-        dataset = datasets.CIFAR10(root='cifar', train=train,download=True,transform=transform)
-    elif name == 'Market-1501':
-        """
-        In progress
-        """
+        dataset = datasets.CIFAR10(root='cifar', train=train, download=True, transform=transform)
+    elif name == 'food-collage':
+        csv_path = os.path.join('input', '%s-%s.csv' % (name, partition))
+        dataset = MultiLabelDataset(csv_path, image_dir, transform)
     return dataset
 
 

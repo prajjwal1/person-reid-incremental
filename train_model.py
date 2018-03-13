@@ -44,9 +44,9 @@ from transforms import RandomBrightness
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--network-name', type=str, required=True)
-    parser.add_argument('-d', '--dataset-name', type=str, required=True)
-    parser.add_argument('-c', '--num-classes', type=int, required=True)
+    parser.add_argument('-n', '--network-name', type=str, required=False)
+    parser.add_argument('-d', '--dataset-name', type=str, required=False)
+    parser.add_argument('-c', '--num-classes', type=int, required=False)
     parser.add_argument('-m', '--multilabel', type=bool, default=False)
     parser.add_argument('-p', '--pretrained', type=bool, default=False)
     parser.add_argument('-l', '--load')
@@ -81,7 +81,7 @@ def main():
         transforms.Scale(256),
         transforms.RandomCrop(224),
         transforms.RandomHorizontalFlip(),
-        transofrms.ToTensor(),
+        transforms.ToTensor(),
         RandomBrightness(-0.25,0.25),
         normTransform
     ])
