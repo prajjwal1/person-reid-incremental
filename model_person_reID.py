@@ -21,7 +21,7 @@ def weights_init_classifier(m):
         init.normal(m.weight.data,std=0.001)
         init.constant(m.bias.data,0.0)
 
-class net1(nn.Module):
+class nnet(nn.Module):
     
     def __init__(self,num_class):
         super().__init__()
@@ -37,12 +37,12 @@ class net1(nn.Module):
         block += [nn.Dropout(p=0.5)] 
 
         block += nn.Sequential(*block)
-        block.apply(weights_init)
+        block.apply(weight_init)
         model_ft.fc = block
         self.model = model_ft
 
         classifier = []
-        classifier += [nn.Linear(num_bottleneck,class_num)]
+        classifier += [nn.Linear(num_bottleneck,num_class)]
         classifier = nn.Sequential(*classifier)
         classifier.apply(weights_init_classifier)
         self.classifier = classifier
@@ -51,3 +51,45 @@ class net1(nn.Module):
         x = self.model(x)
         x = self.classifier(x)
         return x
+
+class nnet_dense(nn.Module):
+
+    def __init__(self,num_classes):
+        super().__init__()
+        model_ft = models.densenet121(pretrained=True)
+        model_ft.features.average = nn.AdaptiveAvgPool2d((1,1))
+
+        block = []
+        num_bottleneck = 512
+
+        block += [nn.Linear(1024, num_bottleneck)]
+        block += [nn.BatchNorm1d(num_bottleneck)]
+        block += [nn.LeakyReLU(0.1)]
+        block += [nn.Dropout(p=0.5)]
+        block += [nn.Sequential(*block)]
+        block.apply(weight_init)
+        model_ft.fc = block
+        self.model = model_ft
+
+        classifier = []
+        classifier += [nn.Linear(num_bottleneck,num_classes)]
+        classifier += nn.Sequential(*classifier)
+        classifier.apply(weights_init_classifier)
+        self.classifier(x)
+
+    def forward(self,x):
+        x = self.model.features(x)
+        x = x.view(x.size(0),-1)
+        x = self.model.fc(x)
+        x = self.classifier(x)
+        return x
+
+net = nnet_dense(751)
+input = Variable(torch.FloatTensor(8,3,224,224))
+output = net(input)
+print("Net output size: " + str(output.shape))
+
+    
+
+
+        
