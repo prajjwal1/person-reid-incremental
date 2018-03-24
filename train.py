@@ -4,7 +4,8 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.optim import lr_scheduler
+#from torch.optim import lr_scheduler
+import torch.optim.lr_scheduler as lr_scheduler
 from torch.autograd import Variable
 import numpy as np
 import torchvision
@@ -19,20 +20,21 @@ from model import ft_net, ft_net_dense
 from random_erasing import RandomErasing
 import json
 
-gpu_ids = 1
+gpu_ids = '1'
+default = '0'
 which_epoch = default
-test_dir = '/home/prajjwalgo/lwf_research/dataset/Market/pytorch'
-data_dir = '/home/prajjwalgo/lwf_research/dataset/Market/pytorch'
+test_dir = '/home/prajjwalgo/research_lwf/Market/pytorch'
+data_dir = '/home/prajjwalgo/research_lwf/Market/pytorch'
 train_all = 'store_true'
-name = ft_ResNet50
-batch_size=16
+name = 'ft_ResNet50'
+batch_size=4
 use_dense = 'store_true'
 color_jitter = 'store_true'
 erasing_p = 0
 
-data_dir = opt.data_dir
-name = opt.name
-str_ids = opt.gpu_ids.split(',')
+#data_dir = opt.data_dir
+#name = opt.name
+str_ids = gpu_ids.split(',')
 gpu_ids = []
 for str_id in str_ids:
     gid = int(str_id)
@@ -53,10 +55,10 @@ transform_train_list = [
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]
 
-if opt.erasing_p>0:
-    transform_train_list = transform_train_list + [RandomErasing(opt.erasing_p)]
+if erasing_p>0:
+    transform_train_list = transform_train_list + [RandomErasing(erasing_p)]
     
-if opt.color_jitter:
+if color_jitter:
     transform_train_list = [transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0)] + transform_train_list
 
 print(transform_train_list)
@@ -74,7 +76,7 @@ data_transforms = {
 }
 
 train_all = ''
-if opt.train_all:
+if train_all:
      train_all = '_all'
 
 image_datasets = {}
@@ -83,7 +85,7 @@ image_datasets['train'] = datasets.ImageFolder(os.path.join(data_dir, 'train' + 
 image_datasets['val'] = datasets.ImageFolder(os.path.join(data_dir, 'val'),
                                           data_transforms['val'])
 
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=opt.batchsize,
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size,
                                              shuffle=True, num_workers=4)
               for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
@@ -213,7 +215,7 @@ def save_network(network, epoch_label):
 # Load a pretrainied model and reset final fully connected layer.
 #
 
-if opt.use_dense:
+if use_dense:
     model = ft_net_dense(len(class_names))
 else:
     model = ft_net(len(class_names))
@@ -229,7 +231,7 @@ base_params = filter(lambda p: id(p) not in ignored_params, model.parameters())
 
 optimizer_ft = optim.SGD([
     {'params': base_params, 'lr': 0.01},
-    {'params'; model.model.fc.parameters(), 'lr': 0.1},
+    {'params': model.model.fc.parameters(), 'lr': 0.1},
     {'params': model.classifier.parameters(), 'lr': 0.1}
 ], momentum=0.9, weight_decay=5e-4, nesterov=True)
 
@@ -240,8 +242,8 @@ if not os.path.isdir(dir_name):
     os.mkdir(dir_name)
 
 # save opts
-with open('%s/opts.json'%dir_name,'w') as fp:
-    json.dump(vars(opt), fp, indent=1)
+#with open('%s/opts.json'%dir_name,'w') as fp:
+#    json.dump(vars(opt), fp, indent=1)
 
 model = train_model(model, criterion, optimizer_ft, exp_lr_scheduler,
                        num_epochs=60)
