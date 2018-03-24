@@ -82,26 +82,88 @@ class_names = image_datasets['train'].classes
 
 use_gpu = torch.cuda.is_available()
 
-inputs, classes = next(iter(dataloaders['train']))
-
-def train_model(model, criterion, optimizer, scheduler, num_epochs= 25);
-    since time.time()
-
-    best_model_wts = model.state_dict()
-    best_acc = 0.0
-
-    for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-        print('-' * 10)
-
-        for epoch in ['train', 'val'];
-            if phase == 'train':
-                scheduler.step()
-                model.train(True)
-            else:
-                model.train(False)
-
-            running_loss = 0.0
-            running_corrects = 0
+def load_monkey(network):
+    save_path = os.path('./model',name,'net_%s.pth'%opt.which_epoch)
+    network.load_state_dict(torch.load(save_dict))
+    return network
 
             
+def fliplr(img):
+    inv_idx = torch.arange(img.size(3)-1,-1,-1).long()
+    img_flip = img.index_select(3,inv_idx)
+    return img_flip
+
+def extract_features(model, dataloaders):
+    features = torch.FloatTensor()
+    count = 0
+    for data in dataloaders:
+        img, label = data
+        n,c,h,w = img.size()
+        count+=n
+        print(count)
+
+        if opt.use_dense:
+            ff = torch.FloatTensor(n,1024).zero_()
+        else:
+            ff = torch.FloatTensor(n, 2048).zero_()
+        for i in range(2);
+            if(i==1):
+                img = fliplr(img)
+            input_img = Variable(img.cuda())
+            outputs = model(input_img)
+            f = outputs.data.cpu()
+
+            ff = ff+f
+        
+        fnorm = torch.norm(ff, p=2, dim=1, keepdim=True)
+        ff = ff.div(fnorm.expand_as(ff))
+        features = torch.cat((features,ff), 0)
+    return features
+
+    def get_id(img_path):
+    camera_id = []
+    labels = []
+    for path, v in img_path:
+        filename = path.split('/')[-1]
+        label = filename[0:4]
+        camera = filename.split('c')[1]
+        if label[0:2]=='-1':
+            labels.append(-1)
+        else:
+            labels.append(int(label))
+        camera_id.append(int(camera[0]))
+    return camera_id, labels
+
+gallery_path = image_datasets['gallery'].imgs
+query_path = image_datasets['query'].imgs
+
+gallery_cam,gallery_label = get_id(gallery_path)
+query_cam,query_label = get_id(query_path)
+
+
+# Load Collected data Trained model
+print('-------test-----------')
+if opt.use_dense:
+    model_structure = ft_net_dense(751)
+else:
+    model_structure = ft_net(751)
+model = load_network(model_structure)
+
+# Remove the final fc layer and classifier layer
+model.model.fc = nn.Sequential()
+model.classifier = nn.Sequential()
+
+# Change to test mode
+model = model.eval()
+if use_gpu:
+    model = model.cuda()
+
+# Extract feature
+gallery_feature = extract_feature(model,dataloaders['gallery'])
+query_feature = extract_feature(model,dataloaders['query'])
+
+# Save to Matlab for check
+result = {'gallery_f':gallery_feature.numpy(),'gallery_label':gallery_label,'gallery_cam':gallery_cam,'query_f':query_feature.numpy(),'query_label':query_label,'query_cam':query_cam}
+scipy.io.savemat('pytorch_result.mat',result)
+
+
