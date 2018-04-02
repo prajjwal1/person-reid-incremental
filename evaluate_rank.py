@@ -17,7 +17,7 @@ def evaluate(score,ql,qc,gl,gc):
     good_index = np.setdiff1d(query_index, camera_index, assume_unique=True)
     junk_index1 = np.argwhere(gl==-1)
     junk_index2 = np.intersect1d(query_index, camera_index)
-    junk_index = np.append(junk_index2, junk_index1) #.flatten())
+    junk_index = np.append(junk_index2, junk_index1) # flatten())
     
     CMC_tmp = compute_mAP(index, good_index, junk_index)
     return CMC_tmp
