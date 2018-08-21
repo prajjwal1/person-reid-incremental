@@ -23,12 +23,55 @@ CUHK-03
 ```
 $python covariance_cuhk-03.py
 ```
-Duke MTMC
+Make sure that you are using the required split and flags, since training is CUHK-03 is more different than these two datasets
+Duke MTMC. Although you can add support for arg parse
 ```
 $ python covariance_duke.py
 ```
+To use ensembling and training, use
+```
+$ python covariance_ensembling.py
+```
+In this case, you'll have to specify amongst which pipelines do you want to perform ensembling. If you get better results, please file a PR.
 
-This repo is under construction, will be documented gradually
+### To perform training:
+While executing make sure to correctly carry out training (Phase 1 and Phase 2) properly as mentioned to achieve incremental learning
+
+When training, log file would be created in the /log directory.
+
+Results:
+
+| No.|      Dataset      |  Rank 1 | Rank 20 | maP |
+|---:|:-------------: |--------:|---------|-----|
+| 1       | Market1501      | 89.3%  |  98.3%  |71.8%|
+| 2       | DukeMTMC      | 80.0%  |  93.7%  |60.2%|
+| 3       | Market1501      | 69.5%  |  92.8%  |40.3%|
+
+| No.|      Dataset      |  Rank 1 | Rank 20 | maP |
+|---:|:-------------: |--------:|---------|-----|
+| 1       | Market1501      | 89.3%  |  98.3%  |71.8%|
+| 2       | CUHK-03      | -  | - |-|
+| 3       | Market1501      | - |  - |-|
+
+- We used a Nvidia GTX 1080 to train the model. Takes around 8-9 hours to train the model for 950 epochs (convergence is usually achieved)
+
+More benchmarks would be released soon.
+
+### Models
+We used a ResNet50 along with different architecture of pipelines. We have used `hybrid_convnet2`.
+
+### To resume training
+```
+$ mkdir saved_models
+```
+Then specify this as per dir structure in the main module
+```
+SAVED_MODEL_PATH = 'saved_models/p1.pth.tar'
+checkpoint = torch.load(SAVED_MODEL_PATH)
+model.load_state_dict(checkpoint['state_dict'])
+```
+### TO-DO
+[] Add support for Tensorboard (Pytorch)
 
 ### Citation:
 Please cite this, if you use our work
