@@ -33,7 +33,10 @@ This repo is under construction, will be documented gradually
 ### Citation:
 Please cite this, if you use our work
 ```
-archivePrefix = "arXiv",
-eprint        = "1808.06281",
-primaryClass  = "cs.CV",
+@misc{1808.06281,
+Author = {Prajjwal Bhargava},
+Title = {Incremental Learning in Person Re-Identification},
+Year = {2018},
+Eprint = {arXiv:1808.06281},
+}
 ```
