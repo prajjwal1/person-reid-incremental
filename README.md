@@ -76,10 +76,17 @@ model.load_state_dict(checkpoint['state_dict'])
 ### Citation:
 Please cite this, if you use our work
 ```
-@misc{1808.06281,
-Author = {Prajjwal Bhargava},
-Title = {Incremental Learning in Person Re-Identification},
-Year = {2018},
-Eprint = {arXiv:1808.06281},
+@ARTICLE{2018arXiv180806281B,
+   author = {{Bhargava}, P.},
+    title = "{Incremental Learning in Person Re-Identification}",
+  journal = {ArXiv e-prints},
+archivePrefix = "arXiv",
+   eprint = {1808.06281},
+ primaryClass = "cs.CV",
+ keywords = {Computer Science - Computer Vision and Pattern Recognition},
+     year = 2018,
+    month = aug,
+   adsurl = {http://adsabs.harvard.edu/abs/2018arXiv180806281B},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
