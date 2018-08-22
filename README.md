@@ -53,7 +53,7 @@ Results:
 | 2       | CUHK-03      | -  | - |-|
 | 3       | Market1501      | - |  - |-|
 
-- We used a Nvidia GTX 1080 to train the model. Takes around 8-9 hours to train the model for 950 epochs (convergence is usually achieved)
+Takes around 8-9 hours to train the model for 950 epochs (convergence is usually achieved)
 
 More benchmarks would be released soon.
 
@@ -71,7 +71,8 @@ checkpoint = torch.load(SAVED_MODEL_PATH)
 model.load_state_dict(checkpoint['state_dict'])
 ```
 ### TO-DO
-[] Add support for Tensorboard (Pytorch)
+[ ] Add support for Tensorboard (Pytorch)
+[ ] Usage of Random Erasing
 
 ### Citation:
 Please cite this, if you use our work
