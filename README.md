@@ -44,6 +44,8 @@ For preparation of Duke MTMC
 ```
 
 For preparation of CUHK-03
+After downloading zip file, it should look like `data/cuhk03/cuhk03_release`. You are required to download [new split](https://github.com/zhunzhong07/person-re-ranking/tree/master/evaluation/data/CUHK03) also. After that, Put these two mat files under `data/cuhk03`
+Here's how it will look like
 ```
 +-- CUHK-03
 |   +-- cuhk03_release
@@ -104,7 +106,7 @@ Takes around 8-9 hours to train the model for 950 epochs (convergence is usually
 More benchmarks would be released soon.
 
 ### Models
-We used a ResNet50 along with different architecture of pipelines. We have used `hybrid_convnet2`.
+We used a ResNet50 along with different architecture of pipelines. We have used `hybrid_convnet2`. You are required to change the dimensions of the FC layer as per number of classes manually. 
 
 ### To resume training
 ```
@@ -126,7 +128,7 @@ model.load_state_dict(checkpoint['state_dict'])
 - Intel® Nervana DevCloud (hyperparameter tuning,ablation studies,training model for quick experiments)
 
 ### Pretrained weights
-Will be made available soon.
+Will be made available soon. Weights are quite large, and GDrive doesn't allow sharing of those files stored on .edu account. So support for this would be welcome.
 
 ### Citation:
 Please cite this, if you use our work
