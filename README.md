@@ -20,7 +20,6 @@ This repository contains code for our research. Paper can be found here, [arXiv]
 
 ### Datasets
 - [Market 1501](http://www.liangzheng.org/Project/project_reid.html)
-- [CUHK-03](http://www.ee.cuhk.edu.hk/~xgwang/CUHK_identification.html)
 - [Duke MTMC](http://vision.cs.duke.edu/DukeMTMC/)
 
 ### Dataset structure
@@ -43,17 +42,6 @@ For preparation of Duke MTMC
 .............
 ```
 
-For preparation of CUHK-03
-After downloading zip file, it should look like `data/cuhk03/cuhk03_release`. You are required to download [new split](https://github.com/zhunzhong07/person-re-ranking/tree/master/evaluation/data/CUHK03) also. After that, Put these two mat files under `data/cuhk03`
-Here's how it will look like
-```
-+-- CUHK-03
-|   +-- cuhk03_release
-|   +-- splits_new_detected.json
-|   +-- splits_new_labeled.json
-.............
-```
-
 Covariance loss metric has been added to all the modules. 
 You're required to change the flags as per phase as described in paper
 
@@ -63,12 +51,6 @@ For training on Market1501:
 ```
 $ python covariance_market1501.py
 ```
-CUHK-03
-```
-$python covariance_cuhk-03.py
-```
-Be careful, Make sure that you are using the required split and flags, since training is CUHK-03 is more different than these two datasets. Settings specific to CUHK-03 have been marked with comments. The default mode loads detected images. Specify `cuhk03-labeled` if you wanna train and test on `labeled` images.
-
 
 For training on Duke MTMC. 
 ```
@@ -93,17 +75,11 @@ Results:
 |---:|:-------------: |--------:|---------|-----|
 | 1       | Market1501      | 89.3%  |  98.3%  |71.8%|
 | 2       | DukeMTMC      | 80.0%  |  93.7%  |60.2%|
-| 3       | Market1501      | 69.5%  |  92.8%  |40.3%|
+| 3       | Market1501      | 70.2%  |  92.4%  |41.2%|
 
-| No.|      Dataset      |  Rank 1 | Rank 20 | maP |
-|---:|:-------------: |--------:|---------|-----|
-| 1       | Market1501      | 89.3%  |  98.3%  |71.8%|
-| 2       | CUHK-03      | -  | - |-|
-| 3       | Market1501      | - |  - |-|
 
 Takes around 8-9 hours to train the model for 950 epochs (convergence is usually achieved)
 
-More benchmarks would be released soon.
 
 ### Models
 We used a ResNet50 along with different architecture of pipelines. We have used `hybrid_convnet2`. You are required to change the dimensions of the FC layer as per number of classes manually. 
@@ -118,17 +94,11 @@ SAVED_MODEL_PATH = 'saved_models/p1.pth.tar'
 checkpoint = torch.load(SAVED_MODEL_PATH)
 model.load_state_dict(checkpoint['state_dict'])
 ```
-### TO-DO
-- [ ] Add support for Tensorboard (Pytorch)
-- [ ] Usage of Random Erasing
-
-### Intel Technologies used
-- Intel® Distribution of Python
-- Intel® Math Kernel Library (Used internally by Pytorch)
-- Intel® Nervana DevCloud (hyperparameter tuning,ablation studies,training model for quick experiments)
-
-### Pretrained weights
-Will be made available soon. Weights are quite large, and GDrive doesn't allow sharing of those files stored on .edu account. So support for this would be welcome.
+### For evaluation
+```
+$ python evaluation.py
+```
+Make sure to set the dataset and path of the models correctly, and also which pipeline to use for evaluation
 
 ### Citation:
 Please cite this, if you use our work
