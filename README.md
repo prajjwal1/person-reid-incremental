@@ -103,17 +103,12 @@ Make sure to set the dataset and path of the models correctly, and also which pi
 ### Citation:
 Please cite this, if you use our work
 ```
-@ARTICLE{2018arXiv180806281B,
-   author = {{Bhargava}, P.},
-    title = "{Incremental Learning in Person Re-Identification}",
-  journal = {ArXiv e-prints},
-archivePrefix = "arXiv",
-   eprint = {1808.06281},
- primaryClass = "cs.CV",
- keywords = {Computer Science - Computer Vision and Pattern Recognition},
-     year = 2018,
-    month = aug,
-   adsurl = {http://adsabs.harvard.edu/abs/2018arXiv180806281B},
-  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+@misc{bhargava2018incremental,
+    title={Incremental Learning in Person Re-Identification},
+    author={Prajjwal Bhargava},
+    year={2018},
+    eprint={1808.06281},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
 }
 ```

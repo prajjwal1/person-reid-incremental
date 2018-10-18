@@ -270,17 +270,8 @@ def train(epoch,model,optim,trainloader):
             cross_entropy_loss = DeepSuperVision(cross_entropy,fc1,pids)
         else:
             cross_entropy_loss = cross_entropy(fc1,pids)
-        """
-        if isinstance(f,tuple):
-            triplet = DeepSuperVision(triplet_loss_fn,f,pids)
-        else:
-            triplet = triplet_loss_fn(f,pids)
-        """
-        #print("xent", cross_entropy_loss)
-        #print("covariance", covariance_loss)
+        
         loss = cross_entropy_loss + covariance_loss + domain_g
-        #print("xent", cross_entropy_loss)
-        #print("covariance_loss", covariance_loss)
 
         optim.zero_grad()
         loss.backward()
