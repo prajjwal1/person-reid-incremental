@@ -57,9 +57,8 @@ For training on Duke MTMC (Phase 2).
 $ python covariance_duke.py
 ```
 #### Make sure to specify the model path properly
-```
-SAVED_MODEL_PATH needs to be specified to lead the model generated from phase 1
-```
+`SAVED_MODEL_PATH` needs to be specified to load the model generated from phase 1
+
 
 To use ensembling and training, use
 ```
