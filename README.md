@@ -47,14 +47,18 @@ You're required to change the flags as per phase as described in paper
 
 Create a directory named as data/ and use the standard directory structure.
 
-For training on Market1501:
+For training on Market1501 (Phase 1):
 ```
 $ python covariance_market1501.py
 ```
 
-For training on Duke MTMC. 
+For training on Duke MTMC (Phase 2). 
 ```
 $ python covariance_duke.py
+```
+#### Make sure to specify the model path properly
+```
+SAVED_MODEL_PATH needs to be specified to lead the model generated from phase 1
 ```
 
 To use ensembling and training, use

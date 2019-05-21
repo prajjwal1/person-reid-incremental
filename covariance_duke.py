@@ -18,7 +18,7 @@ import os.path as osp
 import dataset_manager
 from dataset_loader import ImageDataset
 import transforms as tfms 
-from models import hybrid_convnet2, hybrid_linear
+from models import hybrid_convnet2
 from clr import CyclicLR
 from loss import CrossEntropy,TripletLoss,DeepSuperVision
 from utils import AverageMeter,Logger,save_checkpoint

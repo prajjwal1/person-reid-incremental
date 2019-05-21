@@ -18,7 +18,7 @@ import os.path as osp
 import dataset_manager
 from dataset_loader import ImageDataset
 import transforms as tfms 
-from models import hybrid_convnet2, hybrid_linear
+from models import hybrid_convnet2
 from clr import CyclicLR
 from loss import CrossEntropy,TripletLoss,DeepSuperVision
 from utils import AverageMeter,Logger,save_checkpoint
@@ -357,9 +357,9 @@ def test(model, queryloader,galleryloader,ranks=[1,5,10,20]):
 print("Model is being initialized")     
 
 model = hybrid_convnet2.hybrid_cnn().to(device)
-SAVED_MODEL_PATH = 'saved_models/p1.pth.tar'
+#SAVED_MODEL_PATH = 'saved_models/p1.pth.tar'
 
-checkpoint = torch.load(SAVED_MODEL_PATH)
+#checkpoint = torch.load(SAVED_MODEL_PATH)
 model.load_state_dict(checkpoint['state_dict'])
 #start_epoch = checkpoint['epoch']
 
