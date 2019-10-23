@@ -29,7 +29,7 @@ class AverageMeter(object):
         self.val = val
         self.sum += val*n
         self.count += n
-        self.avg = self.sum/self.count
+        self.avg = self.sum/self.count 
     
 def save_checkpoint(state, is_best, fpath='checkpoint.pth.tar'):
     mkdir_if_missing(osp.dirname(fpath))
